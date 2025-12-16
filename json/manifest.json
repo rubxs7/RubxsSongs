@@ -1,0 +1,22 @@
+{
+  "name": "Adivina la Canción",
+  "short_name": "Adivina",
+  "description": "Juego musical para adivinar canciones al estilo Spotify",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#1db954",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
