@@ -183,71 +183,71 @@
 </div>
 
 <!-- JS -->
-<!-- <script src="js/index.js"></script> -->
+<script src="js/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://sdk.scdn.co/spotify-player.js"></script>
 </body>
 </html>
 <script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
+// --- CONFIGURACIÓN ---
+const clientId = '38ee0a10def44f93aaf9a945965098dc'; // Reemplaza con tu Client ID
+const redirectUri = window.location.origin + window.location.pathname; // Redirige a la misma página
+const scopes = [
+    'user-read-playback-state',
+    'user-modify-playback-state',
+    'streaming'
+];
+
+// --- FUNCIONES ---
+function getTokenFromUrl() {
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+    return params.get('access_token');
 }
 
-// ================= Spotify Web Playback SDK =================
-window.onSpotifyWebPlaybackSDKReady = () => {
-  const token = '38ee0a10def44f93aaf9a945965098dc'; // 🔑 Reemplaza con tu token OAuth
-  const player = new Spotify.Player({
-    name: 'Adivina la Canción Player',
-    getOAuthToken: cb => { cb(token); },
-    volume: 0.5
-  });
+function redirectToSpotifyAuth() {
+    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}` +
+                    `&response_type=token` +
+                    `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+                    `&scope=${encodeURIComponent(scopes.join(' '))}`;
+    window.location = authUrl;
+}
 
-  // Estado listo
-  player.addListener('ready', ({ device_id }) => {
-    console.log('Spotify listo con Device ID', device_id);
-    // Guardar device_id para usarlo al reproducir
-    window.spotifyDeviceId = device_id;
-  });
+async function playSong(uri) {
+    const token = window.sessionStorage.getItem('spotifyToken');
+    if (!token) return console.error('No token disponible');
 
-  player.addListener('not_ready', ({ device_id }) => {
-    console.log('Dispositivo offline', device_id);
-  });
-
-  player.addListener('player_state_changed', state => {
-    if (!state) return;
-    const currentTrack = state.track_window.current_track;
-    document.querySelector('.song-title').textContent = currentTrack.name;
-    document.querySelector('.artist-name').textContent = currentTrack.artists.map(a => a.name).join(', ');
-  });
-
-  player.connect();
-
-  // Función para reproducir una canción
-  async function playSong(trackUri) {
-    if (!window.spotifyDeviceId) return console.error('Device ID no listo');
-    await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${window.spotifyDeviceId}`, {
-      method: 'PUT',
-      body: JSON.stringify({ uris: [trackUri] }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
+    // Selecciona el dispositivo activo
+    const devicesRes = await fetch('https://api.spotify.com/v1/me/player/devices', {
+        headers: { 'Authorization': 'Bearer ' + token }
     });
-  }
+    const devicesData = await devicesRes.json();
+    const deviceId = devicesData.devices[0]?.id;
+    if (!deviceId) return console.error('No hay dispositivos activos');
 
-  // Botón de play
-  document.querySelector('.btn-play').addEventListener('click', () => {
-    // Reemplaza el URI con la canción que quieras reproducir
-    playSong('spotify:track:3n3Ppam7vgaVa1iaRUc9Lp');
-  });
+    // Reproduce la canción
+    await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+        method: 'PUT',
+        body: JSON.stringify({ uris: [uri] }),
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        }
+    });
+}
 
-  // Botones de siguiente y anterior (opcional)
-  document.querySelector('.bi-skip-forward-fill').addEventListener('click', () => {
-    player.nextTrack();
-  });
+// --- EJECUCIÓN ---
+let token = getTokenFromUrl();
+if (token) {
+    window.sessionStorage.setItem('spotifyToken', token);
+    // Limpiar la URL para no mostrar el token
+    window.history.replaceState({}, document.title, redirectUri);
+} else {
+    redirectToSpotifyAuth();
+}
 
-  document.querySelector('.bi-skip-backward-fill').addEventListener('click', () => {
-    player.previousTrack();
-  });
-};
+// Ejemplo: reproducir canción al presionar un botón
+document.querySelector('.btn-play').addEventListener('click', () => {
+    playSong('spotify:track:3n3Ppam7vgaVa1iaRUc9Lp'); // Reemplaza con la URI de la canción que quieras
+});
 </script>
