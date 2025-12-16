@@ -3,8 +3,43 @@ if ("serviceWorker" in navigator) {
 }
 
 // ================= Spotify Web Playback SDK =================
+
+// --- CONFIGURACIÓN ---
+const clientId = '38ee0a10def44f93aaf9a945965098dc'; // Reemplaza con tu Client ID
+const redirectUri = window.location.origin + window.location.pathname; // Redirige a la misma página
+const scopes = [
+    'user-read-playback-state',
+    'user-modify-playback-state',
+    'streaming'
+];
+
+// --- FUNCIONES ---
+function getTokenFromUrl() {
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+    return params.get('access_token');
+}
+
+function redirectToSpotifyAuth() {
+    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}` +
+                    `&response_type=token` +
+                    `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+                    `&scope=${encodeURIComponent(scopes.join(' '))}`;
+    window.location = authUrl;
+}
+
+// --- EJECUCIÓN ---
+let token = getTokenFromUrl();
+if (token) {
+    window.sessionStorage.setItem('spotifyToken', token);
+    // Limpiar la URL para no mostrar el token
+    window.history.replaceState({}, document.title, redirectUri);
+} else {
+    redirectToSpotifyAuth();
+}
+
+
 window.onSpotifyWebPlaybackSDKReady = () => {
-  const token = '38ee0a10def44f93aaf9a945965098dc'; // 🔑 Reemplaza con tu token OAuth
   const player = new Spotify.Player({
     name: 'Adivina la Canción Player',
     getOAuthToken: cb => { cb(token); },
