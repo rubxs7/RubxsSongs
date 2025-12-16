@@ -6,7 +6,7 @@ if ("serviceWorker" in navigator) {
 
 // --- CONFIGURACIÓN ---
 const clientId = '38ee0a10def44f93aaf9a945965098dc'; // Reemplaza con tu Client ID
-const redirectUri = 'https://rubxs7.github.io/RubxsSongs';//window.location.origin + window.location.pathname; // Redirige a la misma página
+const redirectUri = window.location.origin + window.location.pathname; // Redirige a la misma página
 const scopes = [
     'user-read-playback-state',
     'user-modify-playback-state',
@@ -23,7 +23,7 @@ function getTokenFromUrl() {
 function redirectToSpotifyAuth() {
     const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}` +
                     `&response_type=token` +
-                    `&redirect_uri=${redirectUri}` +
+                    `&redirect_uri=${encodeURIComponent(redirectUri)}` +
                     `&scope=${encodeURIComponent(scopes.join(' '))}`;
     window.location = authUrl;
 }
