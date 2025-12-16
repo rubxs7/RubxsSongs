@@ -183,7 +183,7 @@
 </div>
 
 <!-- JS -->
-<!-- <script src="js/index.js"></script> -->
+<script src="js/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://sdk.scdn.co/spotify-player.js"></script>
 </body>
@@ -214,29 +214,6 @@ function redirectToSpotifyAuth() {
     //window.location = authUrl;
 }
 
-async function playSong(uri) {
-    const token = window.sessionStorage.getItem('spotifyToken');
-    if (!token) return console.error('No token disponible');
-
-    // Selecciona el dispositivo activo
-    const devicesRes = await fetch('https://api.spotify.com/v1/me/player/devices', {
-        headers: { 'Authorization': 'Bearer ' + token }
-    });
-    const devicesData = await devicesRes.json();
-    const deviceId = devicesData.devices[0]?.id;
-    if (!deviceId) return console.error('No hay dispositivos activos');
-
-    // Reproduce la canción
-    await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
-        method: 'PUT',
-        body: JSON.stringify({ uris: [uri] }),
-        headers: {
-            'Authorization': 'Bearer ' + token,
-            'Content-Type': 'application/json'
-        }
-    });
-}
-
 // --- EJECUCIÓN ---
 let token = getTokenFromUrl();
 if (token) {
@@ -246,9 +223,4 @@ if (token) {
 } else {
     redirectToSpotifyAuth();
 }
-
-// Ejemplo: reproducir canción al presionar un botón
-document.querySelector('.btn-play').addEventListener('click', () => {
-    playSong('spotify:track:6usohdchdzW9oML7VC4Uhk?si=b98a80e893d94e45'); // Reemplaza con la URI de la canción que quieras
-});
 </script>

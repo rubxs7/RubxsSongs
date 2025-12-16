@@ -47,7 +47,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   // Botón de play
   document.querySelector('.btn-play').addEventListener('click', () => {
     // Reemplaza el URI con la canción que quieras reproducir
-    playSong('spotify:track:3n3Ppam7vgaVa1iaRUc9Lp');
+    playSong('spotify:track:6usohdchdzW9oML7VC4Uhk?si=b98a80e893d94e45');
   });
 
   // Botones de siguiente y anterior (opcional)
