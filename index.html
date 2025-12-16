@@ -211,7 +211,7 @@ function redirectToSpotifyAuth() {
                     `&redirect_uri=${encodeURIComponent(redirectUri)}` +
                     `&scope=${encodeURIComponent(scopes.join(' '))}`;
     alert(authUrl);
-    window.location = authUrl;
+    //window.location = authUrl;
 }
 
 async function playSong(uri) {
