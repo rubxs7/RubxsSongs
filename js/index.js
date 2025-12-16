@@ -23,7 +23,7 @@ function getTokenFromUrl() {
 function redirectToSpotifyAuth() {
     const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}` +
                     `&response_type=token` +
-                    `&redirect_uri=${redirectUri}` +
+                    `&redirect_uri=https://rubxs7.github.io/RubxsSongs` +
                     `&scope=${encodeURIComponent(scopes.join(' '))}`;
     window.location = authUrl;
 }
