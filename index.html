@@ -195,7 +195,7 @@ if ("serviceWorker" in navigator) {
 
 // ================= Spotify Web Playback SDK =================
 window.onSpotifyWebPlaybackSDKReady = () => {
-  const token = 'TU_ACCESS_TOKEN_AQUI'; // 🔑 Reemplaza con tu token OAuth
+  const token = '38ee0a10def44f93aaf9a945965098dc'; // 🔑 Reemplaza con tu token OAuth
   const player = new Spotify.Player({
     name: 'Adivina la Canción Player',
     getOAuthToken: cb => { cb(token); },
