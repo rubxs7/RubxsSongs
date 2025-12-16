@@ -31,12 +31,16 @@ function redirectToSpotifyAuth() {
 
 // --- EJECUCIÓN ---
 let token = getTokenFromUrl() || window.sessionStorage.getItem('spotifyToken');
-if (!token) {
+const hash = window.location.hash;
+
+if (!token && !hash.includes('error')) {
     redirectToSpotifyAuth();
-} else {
+} else if (token) {
     window.sessionStorage.setItem('spotifyToken', token);
     // Limpiar la URL para no mostrar el token
     window.history.replaceState({}, document.title, redirectUri);
+} else {
+    console.error('Error de autenticación con Spotify');
 }
 
 
