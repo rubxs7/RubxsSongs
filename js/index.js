@@ -29,13 +29,13 @@ function redirectToSpotifyAuth() {
 }
 
 // --- EJECUCIÓN ---
-let token = getTokenFromUrl();
-if (token) {
+let token = getTokenFromUrl() || window.sessionStorage.getItem('spotifyToken');
+if (!token) {
+    redirectToSpotifyAuth();
+} else {
     window.sessionStorage.setItem('spotifyToken', token);
     // Limpiar la URL para no mostrar el token
     window.history.replaceState({}, document.title, redirectUri);
-} else {
-    redirectToSpotifyAuth();
 }
 
 
