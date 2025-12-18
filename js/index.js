@@ -15,10 +15,22 @@ const scopes = [
 ];
 
 // --- FUNCIONES ---
-function getTokenFromUrl() {
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    return params.get('access_token');
+const hash = window.location.hash.substring(1);
+const params = new URLSearchParams(hash);
+const token = getFromUrl('access_token') || window.sessionStorage.getItem('spotifyToken');
+const error = getFromUrl('error');
+
+if (params.length>0) {
+  if (error) {
+    console.error('Error de autenticación con Spotify: '+error);
+  } else if (token) {
+    window.sessionStorage.setItem('spotifyToken', token);
+    window.history.replaceState({}, document.title, redirectUri);
+  }
+}
+
+function getFromUrl(getElement) {
+    return params.get(getElement);
 }
 
 function redirectToSpotifyAuth() {
@@ -29,21 +41,7 @@ function redirectToSpotifyAuth() {
     window.location = authUrl;
 }
 
-// --- EJECUCIÓN ---
-let token = getTokenFromUrl() || window.sessionStorage.getItem('spotifyToken');
-const hash = window.location.hash;
-
 document.getElementById("loginSpotifyBtn").addEventListener("click", () => { redirectToSpotifyAuth(); });
-console.log(hash);
-//if (!token && !hash.includes('error')) {
-//    redirectToSpotifyAuth();
-//} else if (token) {
-//    window.sessionStorage.setItem('spotifyToken', token);
-//    // Limpiar la URL para no mostrar el token
-//    window.history.replaceState({}, document.title, redirectUri);
-//} else {
-//    console.error('Error de autenticación con Spotify');
-//}
 
 window.onSpotifyWebPlaybackSDKReady = () => {
   const player = new Spotify.Player({

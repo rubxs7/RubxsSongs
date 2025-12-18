@@ -11,69 +11,11 @@ body {
     color: #ffffff;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     -webkit-font-smoothing: antialiased;
-}/* ===============================
-   Spotify Login Overlay
-================================ */
-
-.spotify-login-overlay {
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(circle at top, #1db95422, #121212 70%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-}
-
-.spotify-login-card {
-    background: #181818;
-    border-radius: 20px;
-    padding: 2.5rem 2rem;
-    max-width: 360px;
-    width: 90%;
-    box-shadow: 0 10px 40px rgba(0,0,0,.6);
-}
-
-.spotify-login-card h2 {
-    color: #fff;
-    font-size: 1.5rem;
-    margin-bottom: .5rem;
-}
-
-.spotify-login-card p {
-    color: #b3b3b3;
-    font-size: .95rem;
-    margin-bottom: 1.8rem;
-}
-
-.spotify-icon {
-    font-size: 3rem;
-    color: #1db954;
-    margin-bottom: 1rem;
-}
-
-/* Botón Spotify */
-.btn-spotify-login {
-    background: #1db954;
-    color: #000;
-    border-radius: 50px;
-    font-weight: 600;
-    padding: .7rem 1.5rem;
-    width: 100%;
-    transition: all .2s ease;
-}
-
-.btn-spotify-login:hover {
-    background: #1ed760;
-    transform: scale(1.03);
 }
 
 /* =====================
    APP LAYOUT (VERTICAL)
 ===================== */
-.app {
-    display: none;
-}
 
 .app {
     min-height: 100dvh;
@@ -86,6 +28,13 @@ body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    transition: opacity .3s ease;
+}
+
+.app.is-hidden {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* =====================
@@ -229,6 +178,63 @@ body {
 .btn-icon-spotify:active {
     transform: scale(0.92);
     box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
+
+/* ===============================
+   Spotify Login Overlay
+================================ */
+
+.spotify-login-overlay {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at top, #1db95422, #121212 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.spotify-login-card {
+    background: #181818;
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    max-width: 360px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0,0,0,.6);
+}
+
+.spotify-login-card h2 {
+    color: #fff;
+    font-size: 1.5rem;
+    margin-bottom: .5rem;
+}
+
+.spotify-login-card p {
+    color: #b3b3b3;
+    font-size: .95rem;
+    margin-bottom: 1.8rem;
+}
+
+.spotify-icon {
+    font-size: 3rem;
+    color: #1db954;
+    margin-bottom: 1rem;
+}
+
+/* Botón Spotify */
+.btn-spotify-login {
+    border-radius: 10px;
+    background-color: #1db954;
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding: .7rem 1.5rem;
+    width: 100%;
+}
+
+.btn-spotify-login:hover {
+    background: #1ed760;
+    transform: scale(1.03);
 }
 
 /* =====================
