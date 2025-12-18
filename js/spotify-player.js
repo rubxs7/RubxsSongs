@@ -56,29 +56,24 @@ async function replay() {
   if (!icon) return;
 
   if (icon.classList.contains('bi-pause-fill')) {
-    const response = await fetch("https://api.spotify.com/v1/me/player/pause", {
-      method: "PUT",
-      headers: {
-        "Authorization": "Bearer " + getValidToken()
-      }
-    });
-
-    if (response.ok) {
-      icon.classList.remove('bi-pause-fill');
-      icon.classList.add('bi-play-fill');
-    }
+    //const response = await fetch("https://api.spotify.com/v1/me/player/pause", {
+    //  method: "PUT",
+    //  headers: {
+    //    "Authorization": "Bearer " + getValidToken()
+    //  }
+    //});
+    await spotifyPlayer.pause();
+    icon.classList.remove('bi-pause-fill');
+    icon.classList.add('bi-play-fill');
   } else if (icon.classList.contains('bi-play-fill')) {
-    const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifyDeviceId}`, {
-      method: "PUT",
-      headers: {
-        "Authorization": "Bearer " + getValidToken()
-      },
-      body: JSON.stringify({ uris: ["spotify:track:7ouMYWpwJ422jRcDASZB7P"] })
-    });
-
-    if (response.ok) {
-      icon.classList.remove('bi-play-fill');
-      icon.classList.add('bi-pause-fill');
-    }
+    //await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifyDeviceId}`, {
+    //  method: "PUT",
+    //  headers: {
+    //    "Authorization": "Bearer " + getValidToken()
+    //  }
+    //});
+    await spotifyPlayer.resume();
+    icon.classList.remove('bi-play-fill');
+    icon.classList.add('bi-pause-fill');
   }
 }
