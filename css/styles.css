@@ -139,6 +139,10 @@ body {
     box-shadow: 0 6px 14px rgba(29, 185, 84, 0.35);
 }
 
+#replayBtn i {
+  pointer-events: none;
+}
+
 /* =====================
    EXTRA ACTIONS (BOTTOM)
 ===================== */

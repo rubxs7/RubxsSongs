@@ -44,6 +44,11 @@ spotifyPlayer.addListener("ready", ({ device_id }) => {
   transferPlaybackHere();
 });
 
+document.getElementById('replayBtn').addEventListener('touchstart', e => {
+  e.preventDefault();
+  replay();
+});
+
 async function replay() {
   const replayBtn = document.getElementById('replayBtn');
   const icon = replayBtn.querySelector('i');
