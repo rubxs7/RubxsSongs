@@ -74,10 +74,22 @@ function getValidToken() {
   return token;
 }
 
+function updateUIIfAuthenticated() {
+  const token = getValidToken();
+  if (!token) return;
+
+  const loginDiv = document.getElementById("spotifyLogin");
+  const appDiv = document.getElementById("app");
+
+  if (loginDiv) loginDiv.style.display = "none";
+  if (appDiv) appDiv.classList.remove("is-hidden");
+}
+
+
 (async function initSpotifyAuth() {
   const token = getValidToken();
   if (token) {
-    console.log("Token válido");
+    updateUIIfAuthenticated();
     return;
   }
 
@@ -86,5 +98,6 @@ function getValidToken() {
 
   if (code) {
     await exchangeCodeForToken(code);
+    updateUIIfAuthenticated();
   }
 })();
