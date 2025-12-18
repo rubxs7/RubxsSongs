@@ -14,6 +14,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   spotifyPlayer.addListener("ready", ({ device_id }) => {
     spotifyDeviceId = device_id;
     console.log("Player listo:", device_id);
+    transferPlaybackHere();
   });
 
   spotifyPlayer.addListener("not_ready", ({ device_id }) => {
@@ -39,10 +40,10 @@ async function transferPlaybackHere() {
   });
 }
 
-spotifyPlayer.addListener("ready", ({ device_id }) => {
-  spotifyDeviceId = device_id;
-  transferPlaybackHere();
-});
+//spotifyPlayer.addListener("ready", ({ device_id }) => {
+//  spotifyDeviceId = device_id;
+//  transferPlaybackHere();
+//});
 
 //document.getElementById('replayBtn').addEventListener('click', e => {
 //  e.preventDefault();
