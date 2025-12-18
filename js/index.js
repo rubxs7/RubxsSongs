@@ -35,17 +35,15 @@ const hash = window.location.hash;
 
 document.getElementById("loginSpotifyBtn").addEventListener("click", () => { redirectToSpotifyAuth(); });
 console.log(hash);
-if (!token && !hash.includes('error')) {
-    redirectToSpotifyAuth();
-} else if (token) {
-    window.sessionStorage.setItem('spotifyToken', token);
-    // Limpiar la URL para no mostrar el token
-    window.history.replaceState({}, document.title, redirectUri);
-} else {
-    console.error('Error de autenticación con Spotify');
-}
-
-
+//if (!token && !hash.includes('error')) {
+//    redirectToSpotifyAuth();
+//} else if (token) {
+//    window.sessionStorage.setItem('spotifyToken', token);
+//    // Limpiar la URL para no mostrar el token
+//    window.history.replaceState({}, document.title, redirectUri);
+//} else {
+//    console.error('Error de autenticación con Spotify');
+//}
 
 window.onSpotifyWebPlaybackSDKReady = () => {
   const player = new Spotify.Player({
