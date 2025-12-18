@@ -25,6 +25,20 @@
 </head>
 <body>
 
+<!-- Login Spotify -->
+<div id="spotifyLogin" class="spotify-login-overlay">
+    <div class="spotify-login-card text-center">
+        <i class="bi bi-spotify spotify-icon"></i>
+        <h2>Inicia sesión con Spotify</h2>
+        <p>Conéctate para empezar a adivinar canciones</p>
+        <button class="btn btn-spotify-login" id="loginSpotifyBtn">
+            <i class="bi bi-box-arrow-in-right"></i>
+            Conectar con Spotify
+        </button>
+    </div>
+</div>
+
+<!-- Inicio app -->
 <div class="app">
     <!-- Texto neutro -->
     <div class="info-section text-center">
@@ -90,93 +104,93 @@
             <i class="bi bi-stopwatch"></i>
         </button>
     </div>
-</div>
 
-<!-- Canción -->
-<div class="modal fade" id="modalSong" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-spotify">
-            <div class="modal-header">
-                <h5 class="modal-title">Canción</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                Nombre de la canción
+    <!-- Canción -->
+    <div class="modal fade" id="modalSong" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-spotify">
+                <div class="modal-header">
+                    <h5 class="modal-title">Canción</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Nombre de la canción
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Artista -->
-<div class="modal fade" id="modalArtist" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-spotify">
-            <div class="modal-header">
-                <h5 class="modal-title">Artista</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                Artista / Grupo
+    <!-- Artista -->
+    <div class="modal fade" id="modalArtist" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-spotify">
+                <div class="modal-header">
+                    <h5 class="modal-title">Artista</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Artista / Grupo
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Álbum -->
-<div class="modal fade" id="modalAlbum" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-spotify">
-            <div class="modal-header">
-                <h5 class="modal-title">Álbum</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                Nombre del disco
+    <!-- Álbum -->
+    <div class="modal fade" id="modalAlbum" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-spotify">
+                <div class="modal-header">
+                    <h5 class="modal-title">Álbum</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Nombre del disco
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Género musical -->
-<div class="modal fade" id="modalGenre" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-spotify">
-            <div class="modal-header">
-                <h5 class="modal-title">Género musical</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                Rock
+    <!-- Género musical -->
+    <div class="modal fade" id="modalGenre" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-spotify">
+                <div class="modal-header">
+                    <h5 class="modal-title">Género musical</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Rock
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Año -->
-<div class="modal fade" id="modalYear" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-spotify">
-            <div class="modal-header">
-                <h5 class="modal-title">Año</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                2024
+    <!-- Año -->
+    <div class="modal fade" id="modalYear" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-spotify">
+                <div class="modal-header">
+                    <h5 class="modal-title">Año</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    2024
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Duración -->
-<div class="modal fade" id="modalDuration" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-spotify">
-            <div class="modal-header">
-                <h5 class="modal-title">Duración</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                3:45
+    <!-- Duración -->
+    <div class="modal fade" id="modalDuration" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-spotify">
+                <div class="modal-header">
+                    <h5 class="modal-title">Duración</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    3:45
+                </div>
             </div>
         </div>
     </div>

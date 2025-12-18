@@ -6,8 +6,8 @@ if ("serviceWorker" in navigator) {
 
 // --- CONFIGURACIÓN ---
 const clientId = '38ee0a10def44f93aaf9a945965098dc'; // Reemplaza con tu Client ID
-//const redirectUri = window.location.origin + window.location.pathname; // Redirige a la misma página
-const redirectUri = 'https://rubxs7.github.io/RubxsSongs/index.html';
+const redirectUri = window.location.origin + window.location.pathname; // Redirige a la misma página
+//const redirectUri = 'https://rubxs7.github.io/RubxsSongs/';
 const scopes = [
     'user-read-playback-state',
     'user-modify-playback-state',
@@ -33,6 +33,8 @@ function redirectToSpotifyAuth() {
 let token = getTokenFromUrl() || window.sessionStorage.getItem('spotifyToken');
 const hash = window.location.hash;
 
+document.getElementById("loginSpotifyBtn").addEventListener("click", () => { redirectToSpotifyAuth(); });
+console.log(hash);
 if (!token && !hash.includes('error')) {
     redirectToSpotifyAuth();
 } else if (token) {
@@ -42,6 +44,7 @@ if (!token && !hash.includes('error')) {
 } else {
     console.error('Error de autenticación con Spotify');
 }
+
 
 
 window.onSpotifyWebPlaybackSDKReady = () => {
