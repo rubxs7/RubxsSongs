@@ -81,7 +81,40 @@ async function replay() {
     //  }
     //});
     await spotifyPlayer.resume();
+    updateSongModals();
     icon.classList.remove('bi-play-fill');
     icon.classList.add('bi-pause-fill');
   }
+}
+
+async function updateSongModals() {
+  if (!spotifyPlayer) return;
+
+  const state = await spotifyPlayer.getCurrentState();
+  if (!state) return; // No hay canción reproduciéndose
+
+  const track = state.track_window.current_track;
+
+  // Actualizamos cada modal
+  const modalMap = {
+    modalSong: track.name,
+    modalArtist: track.artists.map(a => a.name).join(", "),
+    modalAlbum: track.album.name,
+    modalGenre: track.album.genres?.join(", ") || "Desconocido", // Spotify API de Web Playback no devuelve géneros directos
+    modalYear: track.album.release_date?.split("-")[0] || "Desconocido",
+    modalDuration: formatDuration(track.duration_ms)
+  };
+
+  for (const [id, value] of Object.entries(modalMap)) {
+    const modalBody = document.querySelector(`#${id} .modal-body`);
+    if (modalBody) modalBody.textContent = value;
+  }
+}
+
+// Función para formatear duración en ms a mm:ss
+function formatDuration(ms) {
+  const totalSeconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
