@@ -72,7 +72,8 @@ async function replay() {
       method: "PUT",
       headers: {
         "Authorization": "Bearer " + getValidToken()
-      }
+      },
+      body: JSON.stringify({ uris: ["spotify:track:7ouMYWpwJ422jRcDASZB7P"] })
     });
 
     if (response.ok) {
