@@ -44,16 +44,23 @@ spotifyPlayer.addListener("ready", ({ device_id }) => {
   transferPlaybackHere();
 });
 
-document.getElementById('replayBtn').addEventListener('click', e => {
-  e.preventDefault();
-  replay();
+//document.getElementById('replayBtn').addEventListener('click', e => {
+//  e.preventDefault();
+//  replay();
+//});
+
+['click', 'touchstart'].forEach(evt => {
+  replayBtn.addEventListener(evt, e => {
+    e.preventDefault();
+    replay();
+  });
 });
 
 async function replay() {
   const replayBtn = document.getElementById('replayBtn');
   const icon = replayBtn.querySelector('i');
 
-  if (!icon) return;
+  if (!icon || !spotifyPlayer) return;
 
   if (icon.classList.contains('bi-pause-fill')) {
     //const response = await fetch("https://api.spotify.com/v1/me/player/pause", {
