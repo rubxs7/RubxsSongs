@@ -44,7 +44,7 @@ spotifyPlayer.addListener("ready", ({ device_id }) => {
   transferPlaybackHere();
 });
 
-document.getElementById('replayBtn').addEventListener('touchstart', e => {
+document.getElementById('replayBtn').addEventListener('click', e => {
   e.preventDefault();
   replay();
 });
