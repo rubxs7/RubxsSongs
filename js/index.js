@@ -2,48 +2,6 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }
 
-// ================= Spotify Web Playback SDK =================
-
-// --- CONFIGURACIÓN ---
-const clientId = '38ee0a10def44f93aaf9a945965098dc'; // Reemplaza con tu Client ID
-//const redirectUri = window.location.origin + window.location.pathname; // Redirige a la misma página
-const redirectUri = 'https://rubxs7.github.io/RubxsSongs/';
-const scopes = [
-    'user-read-playback-state',
-    'user-modify-playback-state',
-    'streaming'
-];
-
-// --- FUNCIONES ---
-const hash = window.location.hash.substring(1);
-const params = new URLSearchParams(hash);
-const token = getFromUrl('access_token') || window.sessionStorage.getItem('spotifyToken');
-const error = getFromUrl('error');
-
-if (params.length>0) {
-  if (error) {
-    console.error('Error de autenticación con Spotify: '+error);
-  } else if (token) {
-    window.sessionStorage.setItem('spotifyToken', token);
-    window.history.replaceState({}, document.title, redirectUri);
-  }
-}
-
-function getFromUrl(getElement) {
-    return params.get(getElement);
-}
-
-function redirectToSpotifyAuth() {
-    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}` +
-                    `&response_type=token` +
-                    `&redirect_uri=${encodeURIComponent(redirectUri)}` +
-                    `&scope=${encodeURIComponent(scopes.join(' '))}`;
-    console.log(authUrl);
-    //window.location = authUrl;
-}
-
-document.getElementById("loginSpotifyBtn").addEventListener("click", () => { redirectToSpotifyAuth(); });
-
 window.onSpotifyWebPlaybackSDKReady = () => {
   const player = new Spotify.Player({
     name: 'Adivina la Canción Player',
