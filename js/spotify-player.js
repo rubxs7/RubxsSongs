@@ -86,6 +86,46 @@ async function transferPlaybackHere() {
   });
 });
 
+// Canción anterior
+const prevBtn = document.getElementById('peviousSong');
+if (prevBtn) {
+  prevBtn.addEventListener('touchstart', e => {
+    e.preventDefault();
+    previousTrack();
+  });
+}
+
+async function previousTrack() {
+  if (!spotifyDeviceId) return;
+
+  await fetch("https://api.spotify.com/v1/me/player/previous", {
+    method: "POST",
+    headers: {
+      "Authorization": "Bearer " + getValidToken()
+    }
+  });
+}
+
+// Canción siguiente
+const nextBtn = document.getElementById('nextSong');
+if (nextBtn) {
+  nextBtn.addEventListener('touchstart', e => {
+    e.preventDefault();
+    nextTrack();
+  });
+}
+
+async function nextTrack() {
+  if (!spotifyDeviceId) return;
+
+  await fetch("https://api.spotify.com/v1/me/player/next", {
+    method: "POST",
+    headers: {
+      "Authorization": "Bearer " + getValidToken()
+    }
+  });
+}
+
 async function replay() {
   const replayBtn = document.getElementById('replayBtn');
   const icon = replayBtn.querySelector('i');
