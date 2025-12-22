@@ -38,8 +38,8 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     } = state;
 
     // Tiempos
-    currentTimeEl.textContent = msToTime(position);
-    durationEl.textContent = msToTime(duration);
+    currentTimeEl.textContent = formatDuration(position);
+    durationEl.textContent = formatDuration(duration);
 
     // Progreso
     const progressPercent = (position / duration) * 100;
