@@ -45,6 +45,9 @@
  <div id="playlist" class="playlist is-hidden">
     <div class="info-section text-center">
         <h4 class="song-title">Selecciona la playlist para jugar</h4>
+        <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalPlaylists" title="Listas de reproducción" id="btnPlaylists">
+            <i class="bi bi-music-note-list"></i>
+        </button>
     </div>
 
  </div>
@@ -165,6 +168,23 @@
             </div>
         </div>
     </div>
+    
+    <!-- Modal Listas de Reproducción -->
+    <div class="modal fade" id="modalPlaylists" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content modal-spotify">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tus listas de reproducción</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="playlistsContainer">
+                    <!-- Aquí se inyectarán las listas con JS -->
+                    Cargando...
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <!-- JS -->

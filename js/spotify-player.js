@@ -94,6 +94,7 @@ async function previousTrack() {
       "Authorization": "Bearer " + getValidToken()
     }
   });
+  updateSongModals();
 }
 
 // Canción siguiente
@@ -114,6 +115,7 @@ async function nextTrack() {
       "Authorization": "Bearer " + getValidToken()
     }
   });
+  updateSongModals();
 }
 
 async function replay() {
@@ -184,6 +186,47 @@ function stopProgressTimer() {
     progressInterval = null;
   }
 }
+
+// Listas de reproducción
+async function fetchPlaylists() {
+    const token = getValidToken();
+    if (!token) return;
+
+    const container = document.getElementById('playlistsContainer');
+    container.innerHTML = 'Cargando...';
+
+    try {
+        const response = await fetch('https://api.spotify.com/v1/me/playlists', {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        });
+
+        const data = await response.json();
+
+        if (!data.items || data.items.length === 0) {
+            container.innerHTML = 'No tienes listas de reproducción.';
+            return;
+        }
+
+        // Crear lista HTML
+        container.innerHTML = '';
+        data.items.forEach(playlist => {
+            const div = document.createElement('div');
+            div.className = 'playlist-item d-flex align-items-center gap-2 mb-2';
+            div.innerHTML = `
+                <img src="${playlist.images[0]?.url || 'images/icon.png'}" alt="${playlist.name}" width="50" height="50" style="border-radius:8px;">
+                <span>${playlist.name}</span>
+            `;
+            container.appendChild(div);
+        });
+
+    } catch (err) {
+        console.error(err);
+        container.innerHTML = 'Error al cargar las listas.';
+    }
+}
+document.getElementById('btnPlaylists').addEventListener('click', fetchPlaylists);
 
 // Función para formatear duración en ms a mm:ss
 function formatDuration(ms) {
