@@ -236,7 +236,10 @@ async function fetchPlaylists() {
 
           // Añadimos listener al botón "Jugar"
           const playBtn = div.querySelector('.play-playlist-btn');
-          playBtn.addEventListener('click', () => playPlaylist(playlist));
+          if (playBtn) {
+            playBtn.addEventListener('click', () => playPlaylist(playlist));
+            playBtn.addEventListener('touchstart', () => playPlaylist(playlist));
+          }
         });
 
     } catch (err) {
