@@ -144,6 +144,16 @@ async function updateSongModals() {
 
   const track = state.track_window.current_track;
 
+  // Obtenemos toda la información del track
+  const trackResponse = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, { headers: { 'Authorization': 'Bearer ' + accessToken } });
+  const fullTrackData = await trackResponse.json();
+  console.log(fullTrackData);
+  
+  const albumId = fullTrackData.album.id;
+  const albumResponse = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, { headers: { 'Authorization': 'Bearer ' + getValidToken() } });
+  const albumData = await albumResponse.json();
+  console.log(albumData.release_date);
+
   // Actualizamos cada modal
   const modalMap = {
     modalSong: track.name,
@@ -151,11 +161,6 @@ async function updateSongModals() {
     modalAlbum: track.album.name,
     modalYear: track.album.release_date ? track.album.release_date.substring(0, 4) : "Desconocido"
   };
-  
-  const albumId = track.album.id;
-  const albumResponse = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, { headers: { 'Authorization': 'Bearer ' + getValidToken() } });
-  const albumData = await albumResponse.json();
-  console.log(albumData.release_date);
 
   for (const [id, value] of Object.entries(modalMap)) {
     const modalBody = document.querySelector(`#${id} .modal-body`);
