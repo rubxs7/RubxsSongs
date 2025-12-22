@@ -43,7 +43,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   if (isPaused) stopProgressTimer();
   else startProgressTimer();
 
-  // sincronizar icono play/pause
+  // Sincronizar icono play/pause
   const icon = document.querySelector('#replayBtn i');
   icon.classList.toggle('bi-play-fill', isPaused);
   icon.classList.toggle('bi-pause-fill', !isPaused);
@@ -156,26 +156,18 @@ async function updateSongModals() {
   }
 }
 
-// Función para formatear duración en ms a mm:ss
-function formatDuration(ms) {
-  const totalSeconds = Math.floor(ms / 1000);
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-}
-
 // Timer de la canción
 function updateProgressUI() {
   const percent = (currentPosition / trackDuration) * 100;
   progressBar.style.width = `${percent}%`;
-  currentTimeEl.textContent = msToTime(currentPosition);
+  currentTimeEl.textContent = formatDuration(currentPosition);
 }
 
 function startProgressTimer() {
   stopProgressTimer();
 
   progressInterval = setInterval(() => {
-    currentPosition += 1000;
+    currentPosition += 10;
 
     if (currentPosition > trackDuration) {
       currentPosition = trackDuration;
@@ -183,7 +175,7 @@ function startProgressTimer() {
     }
 
     updateProgressUI();
-  }, 1000);
+  }, 10);
 }
 
 function stopProgressTimer() {
@@ -191,4 +183,12 @@ function stopProgressTimer() {
     clearInterval(progressInterval);
     progressInterval = null;
   }
+}
+
+// Función para formatear duración en ms a mm:ss
+function formatDuration(ms) {
+  const totalSeconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
