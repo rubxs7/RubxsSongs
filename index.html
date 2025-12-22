@@ -24,7 +24,7 @@
     <meta name="theme-color" content="#121212">
 </head>
 <body>
-<button class="btn btn-exit-login" onclick="closeSpotifyLogin()" aria-label="Cerrar login">
+<button id="spotifyLogout" class="btn btn-exit-login is-hidden" onclick="closeSpotifyLogin()" aria-label="Cerrar login">
   <i class="bi bi-box-arrow-right"></i>
 </button>
 
@@ -40,6 +40,14 @@
         </button>
     </div>
 </div>
+
+<!-- Seleccionar lista de reproducción -->
+ <div id="playlist" class="playlist is-hidden">
+    <div class="info-section text-center">
+        <h4 class="song-title">Selecciona la playlist para jugar</h4>
+    </div>
+
+ </div>
 
 <!-- Inicio app -->
 <div id="app" class="app is-hidden">
@@ -92,19 +100,9 @@
             <i class="bi bi-disc"></i>
         </button>
 
-        <!-- Botón género -->
-        <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalGenre" title="Género">
-            <i class="bi bi-music-note-list"></i>
-        </button>
-
         <!-- Botón año -->
         <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalYear" title="Año">
             <i class="bi bi-calendar"></i>
-        </button>
-
-        <!-- Botón duración -->
-        <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalDuration" title="Duración">
-            <i class="bi bi-stopwatch"></i>
         </button>
     </div>
 
@@ -153,21 +151,6 @@
         </div>
     </div>
 
-    <!-- Género musical -->
-    <div class="modal fade" id="modalGenre" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content modal-spotify">
-                <div class="modal-header">
-                    <h5 class="modal-title">Género musical</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    Rock
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Año -->
     <div class="modal fade" id="modalYear" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
@@ -178,21 +161,6 @@
                 </div>
                 <div class="modal-body">
                     2024
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Duración -->
-    <div class="modal fade" id="modalDuration" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content modal-spotify">
-                <div class="modal-header">
-                    <h5 class="modal-title">Duración</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    3:45
                 </div>
             </div>
         </div>

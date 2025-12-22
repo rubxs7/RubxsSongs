@@ -1,6 +1,12 @@
 let spotifyPlayer = null;
 let spotifyDeviceId = null;
 
+// Elementos del reproductor
+const progressBar = document.querySelector('.progress-bar');
+const currentTimeEl = document.querySelector('.time span:first-child');
+const durationEl = document.querySelector('.time span:last-child');
+
+
 window.onSpotifyWebPlaybackSDKReady = () => {
   const token = getValidToken();
   if (!token) return;
@@ -20,6 +26,39 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   spotifyPlayer.addListener("not_ready", ({ device_id }) => {
     console.warn("Player no listo:", device_id);
   });
+  
+  spotifyPlayer.addListener('player_state_changed', state => {
+    if (!state) return;
+
+    const {
+      position,
+      duration,
+      paused,
+      track_window
+    } = state;
+
+    // Tiempos
+    currentTimeEl.textContent = msToTime(position);
+    durationEl.textContent = msToTime(duration);
+
+    // Progreso
+    const progressPercent = (position / duration) * 100;
+    progressBar.style.width = `${progressPercent}%`;
+
+    // Datos de canción (opcional pero recomendable)
+    updateSongModals();
+
+    // Icono play / pause sincronizado
+    const icon = document.querySelector('#replayBtn i');
+    if (paused) {
+      icon.classList.remove('bi-pause-fill');
+      icon.classList.add('bi-play-fill');
+    } else {
+      icon.classList.remove('bi-play-fill');
+      icon.classList.add('bi-pause-fill');
+    }
+  });
+
 
   spotifyPlayer.connect();
 };
@@ -40,16 +79,6 @@ async function transferPlaybackHere() {
   });
 }
 
-//spotifyPlayer.addListener("ready", ({ device_id }) => {
-//  spotifyDeviceId = device_id;
-//  transferPlaybackHere();
-//});
-
-//document.getElementById('replayBtn').addEventListener('click', e => {
-//  e.preventDefault();
-//  replay();
-//});
-
 ['click', 'touchstart'].forEach(evt => {
   replayBtn.addEventListener(evt, e => {
     e.preventDefault();
@@ -64,22 +93,10 @@ async function replay() {
   if (!icon || !spotifyPlayer) return;
 
   if (icon.classList.contains('bi-pause-fill')) {
-    //const response = await fetch("https://api.spotify.com/v1/me/player/pause", {
-    //  method: "PUT",
-    //  headers: {
-    //    "Authorization": "Bearer " + getValidToken()
-    //  }
-    //});
     await spotifyPlayer.pause();
     icon.classList.remove('bi-pause-fill');
     icon.classList.add('bi-play-fill');
   } else if (icon.classList.contains('bi-play-fill')) {
-    //await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifyDeviceId}`, {
-    //  method: "PUT",
-    //  headers: {
-    //    "Authorization": "Bearer " + getValidToken()
-    //  }
-    //});
     await spotifyPlayer.resume();
     updateSongModals();
     icon.classList.remove('bi-play-fill');
@@ -100,9 +117,7 @@ async function updateSongModals() {
     modalSong: track.name,
     modalArtist: track.artists.map(a => a.name).join(", "),
     modalAlbum: track.album.name,
-    modalGenre: track.album.genres?.join(", ") || "Desconocido", // Spotify API de Web Playback no devuelve géneros directos
-    modalYear: track.album.release_date?.split("-")[0] || "Desconocido",
-    modalDuration: formatDuration(track.duration_ms)
+    modalYear: track.album.release_date ? track.album.release_date.substring(0, 4) : "Desconocido"
   };
 
   for (const [id, value] of Object.entries(modalMap)) {

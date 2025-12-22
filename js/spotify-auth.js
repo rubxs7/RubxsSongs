@@ -43,10 +43,14 @@ function logoutSpotify() {
   localStorage.removeItem("spotify_exp");
 
   const loginDiv = document.getElementById("spotifyLogin");
+  const logoutBtn = document.getElementById("spotifyLogout");
+  const playlistDiv = document.getElementById("playlist");
   const appDiv = document.getElementById("app");
 
   if (loginDiv) loginDiv.style.display = "flex";
-  if (appDiv) appDiv.classList.add("is-hidden");
+  if (logoutBtn) logoutBtn.classList.add("is-hidden");
+  if (playlistDiv) playlistDiv.classList.add("is-hidden");
+  //if (appDiv) appDiv.classList.add("is-hidden");
 }
 
 async function exchangeCodeForToken(code) {
@@ -90,10 +94,14 @@ function updateUIIfAuthenticated() {
   if (!token) return;
 
   const loginDiv = document.getElementById("spotifyLogin");
+  const logoutBtn = document.getElementById("spotifyLogout");
+  const playlistDiv = document.getElementById("playlist");
   const appDiv = document.getElementById("app");
 
   if (loginDiv) loginDiv.style.display = "none";
-  if (appDiv) appDiv.classList.remove("is-hidden");
+  if (logoutBtn) logoutBtn.classList.remove("is-hidden");
+  if (playlistDiv) playlistDiv.classList.remove("is-hidden");
+  //if (appDiv) appDiv.classList.remove("is-hidden");
 }
 
 

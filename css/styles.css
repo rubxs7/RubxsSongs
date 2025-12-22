@@ -79,7 +79,7 @@ body {
     width: 30%;
     background-color: #1db954;
     border-radius: 999px;
-    transition: width 0.3s ease;
+    transition: width 0.15s linear;
 }
 
 .time {
@@ -280,6 +280,12 @@ body {
   justify-content: center;
   z-index: 2100;
   transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-exit-login.is-hidden {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .btn-exit-login:hover {
