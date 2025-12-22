@@ -148,7 +148,6 @@ async function updateSongModals() {
   // Obtenemos toda la información del track
   const trackResponse = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, { headers: { 'Authorization': 'Bearer ' + getValidToken() } });
   const fullTrackData = await trackResponse.json();
-  console.log(fullTrackData);
 
   // Actualizamos cada modal
   const modalMap = {
@@ -202,11 +201,7 @@ async function fetchPlaylists() {
     container.innerHTML = 'Cargando...';
 
     try {
-        const response = await fetch('https://api.spotify.com/v1/me/playlists', {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        });
+        const response = await fetch('https://api.spotify.com/v1/me/playlists', { headers: { 'Authorization': 'Bearer ' + token } });
 
         const data = await response.json();
 
@@ -258,20 +253,24 @@ async function playPlaylist(playlist) {
     // Reproducir la canción
     await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifyDeviceId}`, {
         method: 'PUT',
-        headers: {
-            'Authorization': 'Bearer ' + token,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            uris: [randomTrack.uri]
-        })
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ uris: [randomTrack.uri] })
     });
 
-    // Actualizar UI
-    document.querySelector('.song-title').textContent = playlist.name;
-    document.querySelector('.album-section img').src = playlist.images[0]?.url || 'images/icon.png';
-    updateSongModals();
-    closeModalIfOpen('modalPlaylists');
+    // Esperar hasta que la canción esté realmente cargada
+    const checkTrackLoaded = async () => {
+        const state = await spotifyPlayer.getCurrentState();
+        if (state && state.track_window.current_track.id === randomTrack.id) {
+            // Actualizar UI
+            document.querySelector('.song-title').textContent = playlist.name;
+            document.querySelector('.album-section img').src = playlist.images[0]?.url || 'images/icon.png';
+            updateSongModals();
+            closeModalIfOpen('modalPlaylists');
+        } else {
+            setTimeout(checkTrackLoaded, 200);
+        }
+    };
+    checkTrackLoaded();
 }
 
 
