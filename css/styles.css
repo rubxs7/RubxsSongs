@@ -58,6 +58,16 @@ body {
     opacity: 0.85;
 }
 
+.album-section img {
+    width: 80%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 12px;
+    object-fit: cover;
+    display: block;
+    margin: 1rem auto;
+}
+
 /* =====================
    PROGRESS BAR
 ===================== */
