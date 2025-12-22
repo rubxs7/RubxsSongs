@@ -143,9 +143,10 @@ async function updateSongModals() {
   if (!state) return; // No hay canción reproduciéndose
 
   const track = state.track_window.current_track;
+  const trackId = track.id;
 
   // Obtenemos toda la información del track
-  const trackResponse = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, { headers: { 'Authorization': 'Bearer ' + accessToken } });
+  const trackResponse = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, { headers: { 'Authorization': 'Bearer ' + getValidToken() } });
   const fullTrackData = await trackResponse.json();
   console.log(fullTrackData);
   
