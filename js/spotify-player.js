@@ -1,11 +1,14 @@
 let spotifyPlayer = null;
 let spotifyDeviceId = null;
+let progressInterval = null;
+let currentPosition = 0;
+let trackDuration = 0;
+let isPaused = true;
 
 // Elementos del reproductor
 const progressBar = document.querySelector('.progress-bar');
 const currentTimeEl = document.querySelector('.time span:first-child');
 const durationEl = document.querySelector('.time span:last-child');
-
 
 window.onSpotifyWebPlaybackSDKReady = () => {
   const token = getValidToken();
@@ -28,36 +31,23 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   });
   
   spotifyPlayer.addListener('player_state_changed', state => {
-    if (!state) return;
+  if (!state) return;
 
-    const {
-      position,
-      duration,
-      paused,
-      track_window
-    } = state;
+  currentPosition = state.position;
+  trackDuration = state.duration;
+  isPaused = state.paused;
 
-    // Tiempos
-    currentTimeEl.textContent = formatDuration(position);
-    durationEl.textContent = formatDuration(duration);
+  durationEl.textContent = msToTime(trackDuration);
+  updateProgressUI();
 
-    // Progreso
-    const progressPercent = (position / duration) * 100;
-    progressBar.style.width = `${progressPercent}%`;
+  if (isPaused) stopProgressTimer();
+  else startProgressTimer();
 
-    // Datos de canción (opcional pero recomendable)
-    updateSongModals();
-
-    // Icono play / pause sincronizado
-    const icon = document.querySelector('#replayBtn i');
-    if (paused) {
-      icon.classList.remove('bi-pause-fill');
-      icon.classList.add('bi-play-fill');
-    } else {
-      icon.classList.remove('bi-play-fill');
-      icon.classList.add('bi-pause-fill');
-    }
-  });
+  // sincronizar icono play/pause
+  const icon = document.querySelector('#replayBtn i');
+  icon.classList.toggle('bi-play-fill', isPaused);
+  icon.classList.toggle('bi-pause-fill', !isPaused);
+});
 
 
   spotifyPlayer.connect();
@@ -172,4 +162,33 @@ function formatDuration(ms) {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
+
+// Timer de la canción
+function updateProgressUI() {
+  const percent = (currentPosition / trackDuration) * 100;
+  progressBar.style.width = `${percent}%`;
+  currentTimeEl.textContent = msToTime(currentPosition);
+}
+
+function startProgressTimer() {
+  stopProgressTimer();
+
+  progressInterval = setInterval(() => {
+    currentPosition += 1000;
+
+    if (currentPosition > trackDuration) {
+      currentPosition = trackDuration;
+      stopProgressTimer();
+    }
+
+    updateProgressUI();
+  }, 1000);
+}
+
+function stopProgressTimer() {
+  if (progressInterval) {
+    clearInterval(progressInterval);
+    progressInterval = null;
+  }
 }
