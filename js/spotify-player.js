@@ -151,10 +151,9 @@ async function updateSongModals() {
     modalAlbum: track.album.name,
     modalYear: track.album.release_date ? track.album.release_date.substring(0, 4) : "Desconocido"
   };
-
   
   const albumId = track.album.id;
-  const albumResponse = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, { headers: { 'Authorization': 'Bearer ' + accessToken } });
+  const albumResponse = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, { headers: { 'Authorization': 'Bearer ' + getValidToken() } });
   const albumData = await albumResponse.json();
   console.log(albumData.release_date);
 
