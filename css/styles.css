@@ -262,6 +262,36 @@ body {
 }
 
 /* =====================
+   LOGOUT
+===================== */
+
+.btn-exit-login {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2100;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-exit-login:hover {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.btn-exit-login:active {
+  transform: scale(0.9);
+}
+
+
+/* =====================
    SMALL SCREENS POLISH
 ===================== */
 @media (max-height: 700px) {

@@ -38,6 +38,17 @@ async function loginWithSpotify() {
   window.location.href = "https://accounts.spotify.com/authorize?" + params.toString();
 }
 
+function logoutSpotify() {
+  localStorage.removeItem("spotify_token");
+  localStorage.removeItem("spotify_exp");
+
+  const loginDiv = document.getElementById("spotifyLogin");
+  const appDiv = document.getElementById("app");
+
+  if (loginDiv) loginDiv.style.display = "flex";
+  if (appDiv) appDiv.classList.add("is-hidden");
+}
+
 async function exchangeCodeForToken(code) {
   const verifier = sessionStorage.getItem("pkce_verifier");
 
