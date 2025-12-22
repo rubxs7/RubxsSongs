@@ -37,7 +37,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   trackDuration = state.duration;
   isPaused = state.paused;
 
-  durationEl.textContent = msToTime(trackDuration);
+  durationEl.textContent = formatDuration(trackDuration);
   updateProgressUI();
 
   if (isPaused) stopProgressTimer();
