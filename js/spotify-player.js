@@ -143,7 +143,7 @@ async function updateSongModals() {
   if (!state) return; // No hay canción reproduciéndose
 
   const track = state.track_window.current_track;
-  const albumData = await fetch(`https://api.spotify.com/v1/albums/${track.album.id}`, {headers: { Authorization: "Bearer " + token }}).then(res => res.json());
+  const albumData = await fetch(`https://api.spotify.com/v1/albums/${track.album.id}`, {headers: { Authorization: "Bearer " + getValidToken() }}).then(res => res.json());
   const albumYear = albumData.release_date ? albumData.release_date.split("-")[0] : "Desconocido";
 
   // Actualizamos cada modal
