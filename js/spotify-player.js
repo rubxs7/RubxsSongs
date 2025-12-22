@@ -212,13 +212,18 @@ async function fetchPlaylists() {
         // Crear lista HTML
         container.innerHTML = '';
         data.items.forEach(playlist => {
-            const div = document.createElement('div');
-            div.className = 'playlist-item d-flex align-items-center gap-2 mb-2';
-            div.innerHTML = `
-                <img src="${playlist.images[0]?.url || 'images/icon.png'}" alt="${playlist.name}" width="50" height="50" style="border-radius:8px;">
-                <span>${playlist.name}</span>
-            `;
-            container.appendChild(div);
+          const div = document.createElement('div');
+          div.className = 'playlist-item d-flex align-items-center gap-2 mb-2';
+          div.innerHTML = `
+              <img src="${playlist.images[0]?.url || 'images/icon.png'}" alt="${playlist.name}" width="50" height="50" style="border-radius:8px;">
+              <span>${playlist.name}</span>
+              <button class="btn btn-success btn-sm ms-auto play-playlist-btn">Jugar</button>
+          `;
+          container.appendChild(div);
+
+          // Añadimos listener al botón "Jugar"
+          const playBtn = div.querySelector('.play-playlist-btn');
+          playBtn.addEventListener('click', () => playPlaylist(playlist));
         });
 
     } catch (err) {
@@ -227,6 +232,41 @@ async function fetchPlaylists() {
     }
 }
 document.getElementById('btnPlaylists').addEventListener('click', fetchPlaylists);
+
+async function playPlaylist(playlist) {
+    const token = getValidToken();
+    if (!token || !spotifyDeviceId) return;
+
+    // Obtener tracks de la playlist
+    const response = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}/tracks`, {
+        headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await response.json();
+    const tracks = data.items;
+
+    if (!tracks || tracks.length === 0) return;
+
+    // Elegir una canción aleatoria
+    const randomTrack = tracks[Math.floor(Math.random() * tracks.length)].track;
+
+    // Reproducir la canción
+    await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifyDeviceId}`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            uris: [randomTrack.uri]
+        })
+    });
+
+    // Actualizar UI
+    document.querySelector('.song-title').textContent = playlist.name;
+    document.querySelector('.album-section img').src = playlist.images[0]?.url || 'images/icon.png';
+    updateSongModals();
+}
+
 
 // Función para formatear duración en ms a mm:ss
 function formatDuration(ms) {

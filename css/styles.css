@@ -194,6 +194,27 @@ body {
     box-shadow: 0 3px 8px rgba(0,0,0,0.3);
 }
 
+.playlist-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.play-playlist-btn {
+    margin-left: auto;
+    background-color: #1db954;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.2rem 0.6rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.play-playlist-btn:hover {
+    background-color: #1ed760;
+}
+
 /* ===============================
    Spotify Login Overlay
 ================================ */
