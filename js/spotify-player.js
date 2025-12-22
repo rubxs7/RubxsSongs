@@ -4,6 +4,9 @@ let progressInterval = null;
 let currentPosition = 0;
 let trackDuration = 0;
 let isPaused = true;
+let currentPlaylist = null;
+let currentTracks = [];
+let currentTrackIndex = 0;
 
 // Elementos del reproductor
 const progressBar = document.querySelector('.progress-bar');
@@ -86,15 +89,23 @@ if (prevBtn) {
 }
 
 async function previousTrack() {
-  if (!spotifyDeviceId) return;
+    if (!spotifyDeviceId || !currentTracks.length) return;
 
-  await fetch("https://api.spotify.com/v1/me/player/previous", {
-    method: "POST",
-    headers: {
-      "Authorization": "Bearer " + getValidToken()
+    // Si llevamos más de 3 segundos, reiniciar la misma canción
+    if (currentPosition > 3000) {
+        await playTrackAtIndex(currentTrackIndex); // reinicia la canción
+        return;
     }
-  });
-  updateSongModals();
+
+    // Si estamos en la primera canción, reiniciar
+    if (currentTrackIndex === 0) {
+        await playTrackAtIndex(currentTrackIndex);
+        return;
+    }
+
+    // Sino, ir a la anterior
+    currentTrackIndex--;
+    await playTrackAtIndex(currentTrackIndex);
 }
 
 // Canción siguiente
@@ -107,15 +118,16 @@ if (nextBtn) {
 }
 
 async function nextTrack() {
-  if (!spotifyDeviceId) return;
+    if (!spotifyDeviceId || !currentTracks.length) return;
 
-  await fetch("https://api.spotify.com/v1/me/player/next", {
-    method: "POST",
-    headers: {
-      "Authorization": "Bearer " + getValidToken()
+    if (currentTrackIndex < currentTracks.length - 1) {
+        currentTrackIndex++;
+    } else {
+        // Última canción: elegir aleatoria
+        currentTrackIndex = Math.floor(Math.random() * currentTracks.length);
     }
-  });
-  updateSongModals();
+
+    await playTrackAtIndex(currentTrackIndex);
 }
 
 async function replay() {
@@ -234,7 +246,7 @@ async function fetchPlaylists() {
 }
 document.getElementById('btnPlaylists').addEventListener('click', fetchPlaylists);
 
-async function playPlaylist(playlist) {
+/* async function playPlaylist(playlist) {
     const token = getValidToken();
     if (!token || !spotifyDeviceId) return;
 
@@ -271,8 +283,52 @@ async function playPlaylist(playlist) {
         }
     };
     checkTrackLoaded();
+} */
+
+async function playPlaylist(playlist) {
+    const token = getValidToken();
+    if (!token || !spotifyDeviceId) return;
+
+    currentPlaylist = playlist;
+
+    const response = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}/tracks`, {
+        headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await response.json();
+    currentTracks = data.items.map(item => item.track);
+
+    if (!currentTracks.length) return;
+
+    // Elegir canción aleatoria al inicio
+    currentTrackIndex = Math.floor(Math.random() * currentTracks.length);
+    await playTrackAtIndex(currentTrackIndex);
 }
 
+async function playTrackAtIndex(index) {
+    if (!currentTracks.length) return;
+    const track = currentTracks[index];
+    const token = getValidToken();
+
+    await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifyDeviceId}`, {
+        method: 'PUT',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ uris: [track.uri] })
+    });
+
+    // Esperar hasta que se cargue la canción
+    const checkTrackLoaded = async () => {
+        const state = await spotifyPlayer.getCurrentState();
+        if (state && state.track_window.current_track.id === track.id) {
+            document.querySelector('.song-title').textContent = currentPlaylist.name;
+            document.querySelector('.album-section img').src = currentPlaylist.images[0]?.url || 'images/icon.png';
+            updateSongModals();
+            closeModalIfOpen('modalPlaylists');
+        } else {
+            setTimeout(checkTrackLoaded, 200);
+        }
+    };
+    checkTrackLoaded();
+}
 
 // Función para formatear duración en ms a mm:ss
 function formatDuration(ms) {
