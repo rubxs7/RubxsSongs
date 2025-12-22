@@ -265,6 +265,7 @@ async function playPlaylist(playlist) {
     document.querySelector('.song-title').textContent = playlist.name;
     document.querySelector('.album-section img').src = playlist.images[0]?.url || 'images/icon.png';
     updateSongModals();
+    closeModalIfOpen('modalPlaylists');
 }
 
 
