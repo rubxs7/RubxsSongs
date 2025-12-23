@@ -7,6 +7,8 @@ let isPaused = true;
 let currentPlaylist = null;
 let currentTracks = [];
 let currentTrackIndex = 0;
+let usedTracks = [];
+let usedTrackIndex = -1;
 
 // Elementos del reproductor
 const progressBar = document.querySelector('.progress-bar');
@@ -89,23 +91,17 @@ if (prevBtn) {
 }
 
 async function previousTrack() {
-    if (!spotifyDeviceId || !currentTracks.length) return;
+    if (!spotifyDeviceId || usedTracks.length === 0 || usedTrackIndex <= 0) return;
 
-    // Si llevamos más de 3 segundos, reiniciar la misma canción
     if (currentPosition > 3000) {
-        await playTrackAtIndex(currentTrackIndex); // reinicia la canción
+        await playTrack(usedTracks[usedTrackIndex]);
         return;
     }
 
-    // Si estamos en la primera canción, reiniciar
-    if (currentTrackIndex === 0) {
-        await playTrackAtIndex(currentTrackIndex);
-        return;
-    }
-
-    // Sino, ir a la anterior
-    currentTrackIndex--;
-    await playTrackAtIndex(currentTrackIndex);
+    // Reproducir la anterior
+    usedTrackIndex--;
+    const previous = usedTracks[usedTrackIndex];
+    await playTrack(previous);
 }
 
 // Canción siguiente
@@ -118,16 +114,18 @@ if (nextBtn) {
 }
 
 async function nextTrack() {
-    if (!spotifyDeviceId || !currentTracks.length) return;
+    if (!spotifyDeviceId || !currentTracks.length || usedTracks.length === currentTracks.length) return;
 
-    if (currentTrackIndex < currentTracks.length - 1) {
-        currentTrackIndex++;
-    } else {
-        // Última canción: elegir aleatoria
-        currentTrackIndex = Math.floor(Math.random() * currentTracks.length);
-    }
+    const availableTracks = currentTracks.filter(track => !usedTracks.some(used => used.id === track.id));
+    if (!availableTracks.length) return;
 
-    await playTrackAtIndex(currentTrackIndex);
+    // Elegir una nueva aleatoria
+    const nextTrack = availableTracks[Math.floor(Math.random() * availableTracks.length)];
+
+    usedTracks.push(nextTrack);
+    usedTrackIndex++;
+
+    await playTrack(nextTrack);
 }
 
 async function replay() {
@@ -249,50 +247,13 @@ async function fetchPlaylists() {
 }
 document.getElementById('btnPlaylists').addEventListener('click', fetchPlaylists);
 
-/* async function playPlaylist(playlist) {
-    const token = getValidToken();
-    if (!token || !spotifyDeviceId) return;
-
-    // Obtener tracks de la playlist
-    const response = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}/tracks`, {
-        headers: { 'Authorization': 'Bearer ' + token }
-    });
-    const data = await response.json();
-    const tracks = data.items;
-
-    if (!tracks || tracks.length === 0) return;
-
-    // Elegir una canción aleatoria
-    const randomTrack = tracks[Math.floor(Math.random() * tracks.length)].track;
-
-    // Reproducir la canción
-    await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifyDeviceId}`, {
-        method: 'PUT',
-        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ uris: [randomTrack.uri] })
-    });
-
-    // Esperar hasta que la canción esté realmente cargada
-    const checkTrackLoaded = async () => {
-        const state = await spotifyPlayer.getCurrentState();
-        if (state && state.track_window.current_track.id === randomTrack.id) {
-            // Actualizar UI
-            document.querySelector('.song-title').textContent = playlist.name;
-            document.querySelector('.album-section img').src = playlist.images[0]?.url || 'images/icon.png';
-            updateSongModals();
-            closeModalIfOpen('modalPlaylists');
-        } else {
-            setTimeout(checkTrackLoaded, 200);
-        }
-    };
-    checkTrackLoaded();
-} */
-
 async function playPlaylist(playlist) {
     const token = getValidToken();
     if (!token || !spotifyDeviceId) return;
 
     currentPlaylist = playlist;
+    usedTracks = [];
+    usedTrackIndex = -1;
 
     const response = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}/tracks`, {
         headers: { 'Authorization': 'Bearer ' + token }
@@ -302,11 +263,14 @@ async function playPlaylist(playlist) {
 
     if (!currentTracks.length) return;
 
-    // Elegir canción aleatoria al inicio
-    currentTrackIndex = Math.floor(Math.random() * currentTracks.length);
-    await playTrackAtIndex(currentTrackIndex);
+    const firstTrack = currentTracks[Math.floor(Math.random() * currentTracks.length)];
+    usedTracks.push(firstTrack);
+    usedTrackIndex = 0;
+
+    await playTrack(firstTrack);
 }
 
+// Reproducir canción a partir del Index de la lista de reproducción
 async function playTrackAtIndex(index) {
     if (!currentTracks.length) return;
     const track = currentTracks[index];
@@ -318,7 +282,6 @@ async function playTrackAtIndex(index) {
         body: JSON.stringify({ uris: [track.uri] })
     });
 
-    // Esperar hasta que se cargue la canción
     const checkTrackLoaded = async () => {
         const state = await spotifyPlayer.getCurrentState();
         if (state && state.track_window.current_track.id === track.id) {
@@ -332,6 +295,31 @@ async function playTrackAtIndex(index) {
     };
     checkTrackLoaded();
 }
+
+// Reproducir canción a partir del track
+async function playTrack(track) {
+    const token = getValidToken();
+
+    await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifyDeviceId}`, {
+        method: 'PUT',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ uris: [track.uri] })
+    });
+
+    const checkTrackLoaded = async () => {
+        const state = await spotifyPlayer.getCurrentState();
+        if (state && state.track_window.current_track.id === track.id) {
+            document.querySelector('.song-title').textContent = currentPlaylist.name;
+            document.querySelector('.album-section img').src = currentPlaylist.images[0]?.url || 'images/icon.png';
+            updateSongModals();
+            closeModalIfOpen('modalPlaylists');
+        } else {
+            setTimeout(checkTrackLoaded, 200);
+        }
+    };
+    checkTrackLoaded();
+}
+
 
 // Función para formatear duración en ms a mm:ss
 function formatDuration(ms) {
