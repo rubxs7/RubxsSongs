@@ -1,6 +1,6 @@
 const clientId = "38ee0a10def44f93aaf9a945965098dc";
 const redirectUri = "https://rubxs7.github.io/RubxsSongs/";
-const scopes = ["user-read-playback-state","user-modify-playback-state","streaming","user-library-read","user-read-private"];
+const scopes = ["user-read-playback-state","user-modify-playback-state","streaming","user-library-read","user-read-private","playlist-read-private","playlist-read-collaborative"];
 
 function generateRandomString(length) {
   const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
