@@ -86,18 +86,28 @@
 
             <!-- Botón artista -->
             <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalArtist" title="Artista">
-                <i class="bi bi-person"></i>
-            </button>
-
-            <!-- Botón álbum -->
-            <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalAlbum" title="Álbum">
-                <i class="bi bi-disc"></i>
+                <i class="bi bi-person-fill"></i>
             </button>
 
             <!-- Botón año -->
             <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalYear" title="Año">
                 <i class="bi bi-calendar"></i>
             </button>
+
+            <!-- Botón década -->
+            <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalDecade" title="Década">
+                <span class="year-label">0's</span>
+            </button>
+
+            <!-- Botón 2000 -->
+            <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modal2000" title="Anterior al 2000">
+                <span class="year-label">2000</span>
+            </button>
+
+            <!-- Botón álbum -->
+            <!--<button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalAlbum" title="Álbum">
+                <i class="bi bi-disc"></i>
+            </button>-->
         </div>
         <div class="extra-row bottom-row">
             <!-- Botón Lista de reproducción -->
@@ -149,19 +159,6 @@
     </div>
 </div>
 
-<!-- Modal Álbum -->
-<div class="modal fade" id="modalAlbum" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-spotify">
-            <div class="modal-header">
-                <h5 class="modal-title">Álbum</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body"> Nombre del disco </div>
-        </div>
-    </div>
-</div>
-
 <!-- Modal Año -->
 <div class="modal fade" id="modalYear" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -174,6 +171,45 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Década -->
+<div class="modal fade" id="modalDecade" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-spotify">
+            <div class="modal-header">
+                <h5 class="modal-title">Década</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body"> Década de la canción </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 2000 -->
+<div class="modal fade" id="modal2000" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-spotify">
+            <div class="modal-header">
+                <h5 class="modal-title">¿Anterior al año 2000?</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body"> ¿La canción es anterior al 2000? </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Álbum -->
+<!--<div class="modal fade" id="modalAlbum" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-spotify">
+            <div class="modal-header">
+                <h5 class="modal-title">Álbum</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body"> Nombre del disco </div>
+        </div>
+    </div>
+</div>-->
 
 <!-- Modal Listas de Reproducción -->
 <div class="modal fade" id="modalPlaylists" tabindex="-1">

@@ -181,13 +181,16 @@ async function updateSongModals() {
   // Obtenemos toda la información del track
   const trackResponse = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, { headers: { 'Authorization': 'Bearer ' + getValidToken() } });
   const fullTrackData = await trackResponse.json();
+  const yearInfo = getReleaseInfo(fullTrackData.album.release_date);
 
   // Actualizamos cada modal
   const modalMap = {
     modalSong: fullTrackData.name,
     modalArtist: fullTrackData.artists.map(a => a.name).join(", "),
-    modalAlbum: fullTrackData.album.name,
-    modalYear: fullTrackData.album.release_date ? fullTrackData.album.release_date.substring(0, 4) : "Desconocido"
+    modalYear: yearInfo.year ? yearInfo.year : "Desconocido",
+    modalDecade: yearInfo.decade ? yearInfo.decade : "Desconocido",
+    modal2000: yearInfo.isPre2000 ? "Canción ANTERIOR a los 2000s" : "Canción POSTERIOR a los 2000s"
+    //modalAlbum: fullTrackData.album.name,
   };
 
   for (const [id, value] of Object.entries(modalMap)) {
@@ -431,4 +434,21 @@ function formatDuration(ms) {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
+
+// Función para obtener los distintos valores de la fecha de la canción
+function getReleaseInfo(releaseDate) {
+    if (!releaseDate) {
+        return { year: "????", decade: "??'s", isPre2000: false };
+    }
+
+    const year = parseInt(releaseDate.substring(0, 4), 10);
+
+    if (isNaN(year)) {
+        return { year: "????", decade: "??'s", isPre2000: false };
+    }
+
+    const decade = Math.floor(year / 10) * 10;
+
+    return { year: year.toString(), decade: `${decade}s`, isPre2000: year < 2000 };
 }
