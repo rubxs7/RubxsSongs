@@ -24,10 +24,6 @@
     <meta name="theme-color" content="#121212">
 </head>
 <body>
-<button id="spotifyLogout" class="btn btn-exit-login is-hidden" onclick="logoutSpotify();" aria-label="Cerrar login">
-  <i class="bi bi-box-arrow-right"></i>
-</button>
-
 <!-- Login Spotify -->
 <div id="spotifyLogin" class="spotify-login-overlay">
     <div class="spotify-login-card text-center">
@@ -109,7 +105,7 @@
                 <i class="bi bi-music-note-list"></i>
             </button>
 
-            <!-- Botón Historial -->
+            <!-- Botón Canciones de la playlist -->
             <button class="btn btn-icon-spotify btn-icon-tracks" data-bs-toggle="modal" data-bs-target="#modalTracks" title="Canciones de la playlist">
                 <i class="bi bi-list-ul"></i>
             </button>
@@ -117,6 +113,11 @@
             <!-- Botón Historial -->
             <button class="btn btn-icon-spotify btn-icon-history" data-bs-toggle="modal" data-bs-target="#modalHistory" title="Historial">
                 <i class="bi bi-clock-history"></i>
+            </button>
+
+            <!-- Botón Historial -->
+            <button id="spotifyLogout" class="btn btn-icon-spotify btn-icon-logout" onclick="logoutSpotify();" title="Cerrar login">
+                <i class="bi bi-box-arrow-right"></i>
             </button>
         </div>
     </div>

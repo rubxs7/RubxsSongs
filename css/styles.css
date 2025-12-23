@@ -244,6 +244,14 @@ body {
     background-color: #a78bfa;
 }
 
+.btn-icon-logout {
+    background-color: #ef4444; /* rojo */
+}
+
+.btn-icon-logout:hover {
+    background-color: #f87171;
+}
+
 /* ===============================
    Spotify Login Overlay
 ================================ */
