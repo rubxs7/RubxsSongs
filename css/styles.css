@@ -215,6 +215,24 @@ body {
     background-color: #1ed760;
 }
 
+/* Botón historial (color distinto) */
+.btn-icon-history {
+    background-color: #3a86ff; /* azul elegante */
+}
+
+.btn-icon-history:hover {
+    background-color: #5a9cff;
+}
+
+/* Botón listas de reproducción */
+.btn-icon-playlist {
+    background-color: #ff9f1c; /* naranja cálido */
+}
+
+.btn-icon-playlist:hover {
+    background-color: #ffb347;
+}
+
 /* ===============================
    Spotify Login Overlay
 ================================ */

@@ -129,7 +129,15 @@ if (nextBtn) {
 }
 
 async function nextTrack() {
-    if (!spotifyDeviceId || !currentTracks.length || usedTracks.length === currentTracks.length) return;
+    if (!spotifyDeviceId || !currentTracks.length) return;
+
+    if (usedTrackIndex < usedTracks.length - 1) {
+        usedTrackIndex++;
+        await playTrack(usedTracks[usedTrackIndex]);
+        return;
+    }
+
+    if (usedTracks.length === currentTracks.length) return;
 
     const availableTracks = currentTracks.filter(track => !usedTracks.some(used => used.id === track.id));
     if (!availableTracks.length) return;
@@ -347,6 +355,44 @@ async function playTrack(track) {
     checkTrackLoaded();
 }
 
+// Historial de canciones reproducidas
+function renderHistoryModal() {
+    const container = document.getElementById('historyContainer');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    if (!usedTracks.length) {
+        container.textContent = 'No hay canciones reproducidas.';
+        return;
+    }
+
+    usedTracks.forEach((track, index) => {
+        const div = document.createElement('div');
+        div.className = 'playlist-item d-flex align-items-center gap-2 mb-2';
+
+        div.innerHTML = `
+            <img
+              src="${track.album.images[0]?.url || 'images/icon.png'}"
+              alt="${track.name}"
+              width="50"
+              height="50"
+              style="border-radius:8px;"
+            >
+            <div class="d-flex flex-column">
+              <span class="fw-semibold">${index + 1}. ${track.name}</span>
+              <small class="text-muted">
+                ${track.artists.map(a => a.name).join(', ')}
+              </small>
+            </div>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+const historyModal = document.getElementById('modalHistory');
+if (historyModal) historyModal.addEventListener('show.bs.modal', () => { renderHistoryModal(); });
 
 // Función para formatear duración en ms a mm:ss
 function formatDuration(ms) {

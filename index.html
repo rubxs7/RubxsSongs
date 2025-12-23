@@ -83,7 +83,7 @@
     <!-- Sección de botones de datos -->
     <div class="extra-section d-flex justify-content-center gap-3 flex-wrap my-4">
         <!-- Botón Lista de reproducción -->
-        <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalPlaylists" title="Listas de reproducción" id="btnPlaylists">
+        <button class="btn btn-icon-spotify btn-icon-playlist" data-bs-toggle="modal" data-bs-target="#modalPlaylists" title="Listas de reproducción" id="btnPlaylists">
             <i class="bi bi-music-note-list"></i>
         </button>
 
@@ -105,6 +105,11 @@
         <!-- Botón año -->
         <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalYear" title="Año">
             <i class="bi bi-calendar"></i>
+        </button>
+
+        <!-- Botón Historial -->
+        <button class="btn btn-icon-spotify btn-icon-history" data-bs-toggle="modal" data-bs-target="#modalHistory" title="Historial">
+            <i class="bi bi-clock-history"></i>
         </button>
     </div>
 </div>
@@ -173,6 +178,22 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Historial -->
+<div class="modal fade" id="modalHistory" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content modal-spotify">
+      <div class="modal-header">
+        <h5 class="modal-title">Historial de reproducción</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="historyContainer">
+        No hay canciones reproducidas.
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- JS -->
 <script src="js/index.js"></script>
