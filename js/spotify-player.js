@@ -38,20 +38,33 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   spotifyPlayer.addListener('player_state_changed', state => {
   if (!state) return;
 
-  currentPosition = state.position;
-  trackDuration = state.duration;
-  isPaused = state.paused;
+    const newPosition = state.position;
+    const newDuration = state.duration;
 
-  durationEl.textContent = formatDuration(trackDuration);
-  updateProgressUI();
+    if (newPosition < currentPosition || newDuration !== trackDuration) {
+        stopProgressTimer();
+        currentPosition = newPosition || 0;
+        trackDuration = newDuration || 0;
+        updateProgressUI();
+    } else {
+        currentPosition = newPosition;
+        trackDuration = newDuration;
+    }
 
-  if (isPaused) stopProgressTimer();
-  else startProgressTimer();
+    isPaused = state.paused;
 
-  // Sincronizar icono play/pause
-  const icon = document.querySelector('#replayBtn i');
-  icon.classList.toggle('bi-play-fill', isPaused);
-  icon.classList.toggle('bi-pause-fill', !isPaused);
+    durationEl.textContent = formatDuration(trackDuration);
+
+    if (isPaused) {
+        stopProgressTimer();
+    } else {
+        startProgressTimer();
+    }
+
+    // Sincronizar icono play / pause
+    const icon = document.querySelector('#replayBtn i');
+    icon.classList.toggle('bi-play-fill', isPaused);
+    icon.classList.toggle('bi-pause-fill', !isPaused);
 });
 
 
@@ -91,12 +104,14 @@ if (prevBtn) {
 }
 
 async function previousTrack() {
-    if (!spotifyDeviceId || usedTracks.length === 0 || usedTrackIndex <= 0) return;
+    if (!spotifyDeviceId || usedTracks.length === 0) return;
 
     if (currentPosition > 3000) {
         await playTrack(usedTracks[usedTrackIndex]);
         return;
     }
+
+    if (usedTrackIndex <= 0) return;
 
     // Reproducir la anterior
     usedTrackIndex--;
@@ -202,6 +217,14 @@ function stopProgressTimer() {
   }
 }
 
+function resetProgress() {
+    stopProgressTimer();
+    currentPosition = 0;
+    trackDuration = 0;
+    updateProgressUI();
+}
+
+
 // Listas de reproducción
 async function fetchPlaylists() {
     const token = getValidToken();
@@ -276,6 +299,8 @@ async function playTrackAtIndex(index) {
     const track = currentTracks[index];
     const token = getValidToken();
 
+    resetProgress();
+
     await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifyDeviceId}`, {
         method: 'PUT',
         headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
@@ -299,6 +324,8 @@ async function playTrackAtIndex(index) {
 // Reproducir canción a partir del track
 async function playTrack(track) {
     const token = getValidToken();
+
+    resetProgress();
 
     await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifyDeviceId}`, {
         method: 'PUT',
