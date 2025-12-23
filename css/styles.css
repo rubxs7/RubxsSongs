@@ -217,6 +217,12 @@ body {
     background-color: #1ed760;
 }
 
+/* Botones información de la canción */
+.btn-icon-artist { background-color: #4AC743; }
+.btn-icon-year { background-color: #179476; }
+.btn-icon-decade { background-color: #31945D; }
+.btn-icon-2000 { background-color: #4ABA6C; }
+
 /* Botón historial (color distinto) */
 .btn-icon-history {
     background-color: #3a86ff; /* azul */

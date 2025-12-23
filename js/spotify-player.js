@@ -189,7 +189,7 @@ async function updateSongModals() {
     modalArtist: fullTrackData.artists.map(a => a.name).join(", "),
     modalYear: yearInfo.year ? yearInfo.year : "Desconocido",
     modalDecade: yearInfo.decade ? yearInfo.decade : "Desconocido",
-    modal2000: yearInfo.isPre2000 ? "Canción ANTERIOR a los 2000s" : "Canción POSTERIOR a los 2000s"
+    modal2000: yearInfo.isPre2000 ? "ANTERIOR al año 2000" : "IGUAL o POSTERIOR al año 2000"
     //modalAlbum: fullTrackData.album.name,
   };
 
