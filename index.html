@@ -81,36 +81,44 @@
     </div>
 
     <!-- Sección de botones de datos -->
-    <div class="extra-section d-flex justify-content-center gap-3 flex-wrap my-4">
-        <!-- Botón Lista de reproducción -->
-        <button class="btn btn-icon-spotify btn-icon-playlist" data-bs-toggle="modal" data-bs-target="#modalPlaylists" title="Listas de reproducción" id="btnPlaylists">
-            <i class="bi bi-music-note-list"></i>
-        </button>
+    <div class="extra-section">
+        <div class="extra-row top-row">
+            <!-- Botón canción -->
+            <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalSong" title="Canción">
+                <i class="bi bi-music-note-beamed"></i>
+            </button>
 
-        <!-- Botón canción -->
-        <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalSong" title="Canción">
-            <i class="bi bi-music-note-beamed"></i>
-        </button>
+            <!-- Botón artista -->
+            <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalArtist" title="Artista">
+                <i class="bi bi-person"></i>
+            </button>
 
-        <!-- Botón artista -->
-        <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalArtist" title="Artista">
-            <i class="bi bi-person"></i>
-        </button>
+            <!-- Botón álbum -->
+            <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalAlbum" title="Álbum">
+                <i class="bi bi-disc"></i>
+            </button>
 
-        <!-- Botón álbum -->
-        <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalAlbum" title="Álbum">
-            <i class="bi bi-disc"></i>
-        </button>
+            <!-- Botón año -->
+            <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalYear" title="Año">
+                <i class="bi bi-calendar"></i>
+            </button>
+        </div>
+        <div class="extra-row bottom-row">
+            <!-- Botón Lista de reproducción -->
+            <button class="btn btn-icon-spotify btn-icon-playlist" data-bs-toggle="modal" data-bs-target="#modalPlaylists" title="Listas de reproducción" id="btnPlaylists">
+                <i class="bi bi-music-note-list"></i>
+            </button>
 
-        <!-- Botón año -->
-        <button class="btn btn-icon-spotify" data-bs-toggle="modal" data-bs-target="#modalYear" title="Año">
-            <i class="bi bi-calendar"></i>
-        </button>
+            <!-- Botón Historial -->
+            <button class="btn btn-icon-spotify btn-icon-tracks" data-bs-toggle="modal" data-bs-target="#modalTracks" title="Canciones de la playlist">
+                <i class="bi bi-list-ul"></i>
+            </button>
 
-        <!-- Botón Historial -->
-        <button class="btn btn-icon-spotify btn-icon-history" data-bs-toggle="modal" data-bs-target="#modalHistory" title="Historial">
-            <i class="bi bi-clock-history"></i>
-        </button>
+            <!-- Botón Historial -->
+            <button class="btn btn-icon-spotify btn-icon-history" data-bs-toggle="modal" data-bs-target="#modalHistory" title="Historial">
+                <i class="bi bi-clock-history"></i>
+            </button>
+        </div>
     </div>
 </div>
 
@@ -179,6 +187,19 @@
     </div>
 </div>
 
+<!-- Modal Canciones de la Playlist -->
+<div class="modal fade" id="modalTracks" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content modal-spotify">
+            <div class="modal-header">
+                <h5 class="modal-title">Canciones de la playlist</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="tracksContainer"> Selecciona una playlist. </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Historial -->
 <div class="modal fade" id="modalHistory" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -187,13 +208,10 @@
         <h5 class="modal-title">Historial de reproducción</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body" id="historyContainer">
-        No hay canciones reproducidas.
-      </div>
+      <div class="modal-body" id="historyContainer"> No hay canciones reproducidas. </div>
     </div>
   </div>
 </div>
-
 
 <!-- JS -->
 <script src="js/index.js"></script>

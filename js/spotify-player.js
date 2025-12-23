@@ -355,6 +355,38 @@ async function playTrack(track) {
     checkTrackLoaded();
 }
 
+// Canciones de la lista de reproducción seleccionada
+function renderTracksModal() {
+    const container = document.getElementById('tracksContainer');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    if (!currentTracks.length) {
+        container.textContent = 'Selecciona una playlist.';
+        return;
+    }
+
+    currentTracks.forEach((track, index) => {
+        const div = document.createElement('div');
+        div.className = 'playlist-item d-flex align-items-center gap-2 mb-2';
+
+        div.innerHTML = `
+            <img src="${track.album.images[0]?.url || 'images/icon.png'}" alt="${track.name}" width="50" height="50" style="border-radius:8px;">
+            <div class="d-flex flex-column">
+              <span class="fw-semibold">${index + 1}. ${track.name}</span>
+              <small class="text-muted">
+                ${track.artists.map(a => a.name).join(', ')}
+              </small>
+            </div>
+        `;
+
+        container.appendChild(div);
+    });
+}
+const tracksModal = document.getElementById('modalTracks');
+if (tracksModal) tracksModal.addEventListener('show.bs.modal', () => { renderTracksModal(); });
+
 // Historial de canciones reproducidas
 function renderHistoryModal() {
     const container = document.getElementById('historyContainer');
@@ -390,7 +422,6 @@ function renderHistoryModal() {
         container.appendChild(div);
     });
 }
-
 const historyModal = document.getElementById('modalHistory');
 if (historyModal) historyModal.addEventListener('show.bs.modal', () => { renderHistoryModal(); });
 

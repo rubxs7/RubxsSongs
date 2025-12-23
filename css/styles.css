@@ -161,15 +161,17 @@ body {
     margin-top: auto;
     padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
     display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: center;
+    /*background: linear-gradient( to top, rgba(0,0,0,0.85), rgba(0,0,0,0.3), transparent );*/
+}
+
+.extra-row {
+    display: flex;
     justify-content: center;
     gap: 0.8rem;
-    flex-wrap: wrap;
-    background: linear-gradient(
-        to top,
-        rgba(0,0,0,0.85),
-        rgba(0,0,0,0.3),
-        transparent
-    );
+    width: 100%;
 }
 
 /* Spotify-style action buttons */
@@ -202,7 +204,7 @@ body {
 
 .play-playlist-btn {
     margin-left: auto;
-    background-color: #1db954;
+    background-color: #1db954; /* verde */
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -217,7 +219,7 @@ body {
 
 /* Botón historial (color distinto) */
 .btn-icon-history {
-    background-color: #3a86ff; /* azul elegante */
+    background-color: #3a86ff; /* azul */
 }
 
 .btn-icon-history:hover {
@@ -226,11 +228,20 @@ body {
 
 /* Botón listas de reproducción */
 .btn-icon-playlist {
-    background-color: #ff9f1c; /* naranja cálido */
+    background-color: #ff9f1c; /* naranja */
 }
 
 .btn-icon-playlist:hover {
     background-color: #ffb347;
+}
+
+/* Botón canciones de lista de reproducción */
+.btn-icon-tracks {
+    background-color: #8b5cf6; /* violeta */
+}
+
+.btn-icon-tracks:hover {
+    background-color: #a78bfa;
 }
 
 /* ===============================
