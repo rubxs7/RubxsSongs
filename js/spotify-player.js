@@ -89,7 +89,7 @@ async function transferPlaybackHere() {
 
 // Canción anterior
 const prevBtn = document.getElementById('peviousSong');
-if (prevBtn) prevBtn.addEventListener('click', e => { e.preventDefault(); previousTrack(); });
+if (prevBtn) prevBtn.addEventListener('pointerup', e => { e.preventDefault(); previousTrack(); });
 
 async function previousTrack() {
     if (!spotifyDeviceId || usedTracks.length === 0) return;
@@ -109,7 +109,7 @@ async function previousTrack() {
 
 // Canción siguiente
 const nextBtn = document.getElementById('nextSong');
-if (nextBtn) nextBtn.addEventListener('click', e => { e.preventDefault(); nextTrack(); });
+if (nextBtn) nextBtn.addEventListener('pointerup', e => { e.preventDefault(); nextTrack(); });
 
 async function nextTrack() {
     if (!spotifyDeviceId || !currentTracks.length) return;
@@ -135,7 +135,7 @@ async function nextTrack() {
 }
 
 // Reproducir/Parar canción
-if (replayBtn) replayBtn.addEventListener('click', e => { e.preventDefault(); replay(); });
+if (replayBtn) replayBtn.addEventListener('pointerup', e => { e.preventDefault(); replay(); });
 async function replay() {
   const replayBtn = document.getElementById('replayBtn');
   const icon = replayBtn.querySelector('i');
@@ -254,7 +254,7 @@ async function fetchPlaylists() {
           // Añadimos listener al botón "Jugar"
           const playBtn = div.querySelector('.play-playlist-btn');
           if (playBtn) {
-            playBtn.addEventListener('click', e => { e.preventDefault(); playPlaylist(playlist); });
+            playBtn.addEventListener('pointerup', e => { e.preventDefault(); playPlaylist(playlist); });
             //playBtn.addEventListener('touchstart', () => playPlaylist(playlist));
           }
         });
@@ -264,7 +264,7 @@ async function fetchPlaylists() {
         container.innerHTML = 'Error al cargar las listas.';
     }
 }
-document.getElementById('btnPlaylists').addEventListener('click', fetchPlaylists);
+document.getElementById('btnPlaylists').addEventListener('pointerup', fetchPlaylists);
 
 async function playPlaylist(playlist) {
     const token = getValidToken();

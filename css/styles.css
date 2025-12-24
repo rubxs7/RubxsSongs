@@ -258,6 +258,10 @@ body {
     background-color: #f87171;
 }
 
+button {
+  touch-action: manipulation;
+}
+
 /* ===============================
    Spotify Login Overlay
 ================================ */
