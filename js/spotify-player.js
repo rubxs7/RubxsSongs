@@ -89,7 +89,8 @@ async function transferPlaybackHere() {
 
 // Canción anterior
 const prevBtn = document.getElementById('peviousSong');
-if (prevBtn) prevBtn.addEventListener('pointerup', e => { e.preventDefault(); previousTrack(); });
+//if (prevBtn) prevBtn.addEventListener('pointerup', e => { e.preventDefault(); previousTrack(); });
+if (prevBtn) bindPlayAction(prevBtn, () => previousTrack());
 
 async function previousTrack() {
     if (!spotifyDeviceId || usedTracks.length === 0) return;
@@ -109,7 +110,8 @@ async function previousTrack() {
 
 // Canción siguiente
 const nextBtn = document.getElementById('nextSong');
-if (nextBtn) nextBtn.addEventListener('pointerup', e => { e.preventDefault(); nextTrack(); });
+//if (nextBtn) nextBtn.addEventListener('pointerup', e => { e.preventDefault(); nextTrack(); });
+if (nextBtn) bindPlayAction(nextBtn, () => nextTrack());
 
 async function nextTrack() {
     if (!spotifyDeviceId || !currentTracks.length) return;
@@ -135,9 +137,11 @@ async function nextTrack() {
 }
 
 // Reproducir/Parar canción
-if (replayBtn) replayBtn.addEventListener('pointerup', e => { e.preventDefault(); replay(); });
+const replayBtn = document.getElementById('replayBtn');
+//if (replayBtn) replayBtn.addEventListener('pointerup', e => { e.preventDefault(); replay(); });
+if (replayBtn) bindPlayAction(replayBtn, () => replay());
+
 async function replay() {
-  const replayBtn = document.getElementById('replayBtn');
   const icon = replayBtn.querySelector('i');
 
   if (!icon || !spotifyPlayer) return;
@@ -253,10 +257,11 @@ async function fetchPlaylists() {
 
           // Añadimos listener al botón "Jugar"
           const playBtn = div.querySelector('.play-playlist-btn');
-          if (playBtn) {
-            playBtn.addEventListener('pointerup', e => { e.preventDefault(); playPlaylist(playlist); });
-            //playBtn.addEventListener('touchstart', () => playPlaylist(playlist));
-          }
+          if (playBtn) bindPlayAction(playBtn, () => playPlaylist(playlist));
+          //if (playBtn) {
+          //  playBtn.addEventListener('pointerup', e => { e.preventDefault(); playPlaylist(playlist); });
+          //  playBtn.addEventListener('touchstart', () => playPlaylist(playlist));
+          //}
         });
 
     } catch (err) {
@@ -264,7 +269,9 @@ async function fetchPlaylists() {
         container.innerHTML = 'Error al cargar las listas.';
     }
 }
-document.getElementById('btnPlaylists').addEventListener('pointerup', fetchPlaylists);
+//document.getElementById('btnPlaylists').addEventListener('pointerup', fetchPlaylists);
+const playlistsBtn = document.getElementById('btnPlaylists');
+if (playlistsBtn) bindPlayAction(playlistsBtn, () => fetchPlaylists());
 
 async function playPlaylist(playlist) {
     const token = getValidToken();
@@ -439,4 +446,22 @@ function getReleaseInfo(releaseDate) {
     const decade = Math.floor(year / 10) * 10;
 
     return { year: year.toString(), decade: `${decade}s`, isPre2000: year < 2000 };
+}
+
+// Para pulsar botones
+function bindPlayAction(el, handler) {
+    let touched = false;
+
+    el.addEventListener('touchend', e => {
+        touched = true;
+        handler();
+    }, { passive: true });
+
+    el.addEventListener('click', e => {
+        if (touched) {
+            touched = false;
+            return;
+        }
+        handler();
+    });
 }
