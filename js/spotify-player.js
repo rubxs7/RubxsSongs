@@ -277,6 +277,8 @@ async function playPlaylist(playlist) {
     const token = getValidToken();
     if (!token || !spotifyDeviceId) return;
 
+    await showLoading();
+
     currentPlaylist = playlist;
     usedTracks = [];
     usedTrackIndex = -1;
@@ -297,6 +299,7 @@ async function playPlaylist(playlist) {
     usedTrackIndex = 0;
 
     await playTrack(firstTrack);
+    await hideLoading();
 }
 
 // Reproducir canción a partir del Index de la lista de reproducción
@@ -331,7 +334,8 @@ async function playTrackAtIndex(index) {
 async function playTrack(track) {
     const token = getValidToken();
 
-    resetProgress();
+    await showLoading();
+    await resetProgress();
 
     await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifyDeviceId}`, {
         method: 'PUT',
@@ -350,7 +354,8 @@ async function playTrack(track) {
             setTimeout(checkTrackLoaded, 200);
         }
     };
-    checkTrackLoaded();
+    await checkTrackLoaded();
+    await hideLoading();
 }
 
 // Canciones de la lista de reproducción seleccionada
@@ -464,4 +469,15 @@ function bindPlayAction(el, handler) {
         }
         handler();
     });
+}
+
+// Funciones para icono de cargando
+function showLoading() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) overlay.classList.remove('is-hidden');
+}
+
+function hideLoading() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) overlay.classList.add('is-hidden');
 }
