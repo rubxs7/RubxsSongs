@@ -87,21 +87,9 @@ async function transferPlaybackHere() {
   });
 }
 
-['click', 'touchstart'].forEach(evt => {
-  replayBtn.addEventListener(evt, e => {
-    e.preventDefault();
-    replay();
-  });
-});
-
 // Canción anterior
 const prevBtn = document.getElementById('peviousSong');
-if (prevBtn) {
-  prevBtn.addEventListener('touchstart', e => {
-    e.preventDefault();
-    previousTrack();
-  });
-}
+if (prevBtn) prevBtn.addEventListener('click', e => { e.preventDefault(); previousTrack(); });
 
 async function previousTrack() {
     if (!spotifyDeviceId || usedTracks.length === 0) return;
@@ -121,12 +109,7 @@ async function previousTrack() {
 
 // Canción siguiente
 const nextBtn = document.getElementById('nextSong');
-if (nextBtn) {
-  nextBtn.addEventListener('touchstart', e => {
-    e.preventDefault();
-    nextTrack();
-  });
-}
+if (nextBtn) nextBtn.addEventListener('click', e => { e.preventDefault(); nextTrack(); });
 
 async function nextTrack() {
     if (!spotifyDeviceId || !currentTracks.length) return;
@@ -151,6 +134,8 @@ async function nextTrack() {
     await playTrack(nextTrack);
 }
 
+// Reproducir/Parar canción
+if (replayBtn) replayBtn.addEventListener('click', e => { e.preventDefault(); replay(); });
 async function replay() {
   const replayBtn = document.getElementById('replayBtn');
   const icon = replayBtn.querySelector('i');
@@ -269,8 +254,8 @@ async function fetchPlaylists() {
           // Añadimos listener al botón "Jugar"
           const playBtn = div.querySelector('.play-playlist-btn');
           if (playBtn) {
-            playBtn.addEventListener('click', () => playPlaylist(playlist));
-            playBtn.addEventListener('touchstart', () => playPlaylist(playlist));
+            playBtn.addEventListener('click', e => { e.preventDefault(); playPlaylist(playlist); });
+            //playBtn.addEventListener('touchstart', () => playPlaylist(playlist));
           }
         });
 
@@ -289,11 +274,14 @@ async function playPlaylist(playlist) {
     usedTracks = [];
     usedTrackIndex = -1;
 
-    const response = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}/tracks`, {
-        headers: { 'Authorization': 'Bearer ' + token }
-    });
-    const data = await response.json();
-    currentTracks = data.items.map(item => item.track);
+    let urlPlaylist = `https://api.spotify.com/v1/playlists/${playlist.id}/tracks?limit=100`;
+
+    while (urlPlaylist) {
+      const response = await fetch(urlPlaylist, { headers: { 'Authorization': 'Bearer ' + token } });
+      const data = await response.json();
+      currentTracks = currentTracks.concat(data.items.map(item => item.track).filter(track => track));
+      url = data.next;
+    }
 
     if (!currentTracks.length) return;
 

@@ -38,7 +38,9 @@ async function loginWithSpotify() {
   window.location.href = "https://accounts.spotify.com/authorize?" + params.toString();
 }
 
-function logoutSpotify() {
+async function logoutSpotify() {
+  await stopPlaybackIfPlaying();
+
   localStorage.removeItem("spotify_token");
   localStorage.removeItem("spotify_exp");
 
@@ -116,3 +118,17 @@ function updateUIIfAuthenticated() {
     updateUIIfAuthenticated();
   }
 })();
+
+async function stopPlaybackIfPlaying() {
+    const token = getValidToken();
+    if (!token) return;
+
+    try {
+        await fetch('https://api.spotify.com/v1/me/player/pause', {
+            method: 'PUT',
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+    } catch (err) {
+        console.warn('No se pudo pausar la reproducción', err);
+    }
+}
