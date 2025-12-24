@@ -251,7 +251,7 @@ async function fetchPlaylists() {
           div.innerHTML = `
               <img src="${playlist.images[0]?.url || 'images/icon.png'}" alt="${playlist.name}" width="50" height="50" style="border-radius:8px;">
               <span>${playlist.name}</span>
-              <button class="btn btn-success btn-sm ms-auto play-playlist-btn">Jugar</button>
+              <button type="button" class="btn btn-success btn-sm ms-auto play-playlist-btn">Jugar</button>
           `;
           container.appendChild(div);
 
@@ -287,7 +287,7 @@ async function playPlaylist(playlist) {
       const response = await fetch(urlPlaylist, { headers: { 'Authorization': 'Bearer ' + token } });
       const data = await response.json();
       currentTracks = currentTracks.concat(data.items.map(item => item.track).filter(track => track));
-      url = data.next;
+      urlPlaylist = data.next;
     }
 
     if (!currentTracks.length) return;
